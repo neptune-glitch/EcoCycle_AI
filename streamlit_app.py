@@ -44,7 +44,7 @@ div.stButton>button{
 # ---------------------------------------------------
 with st.sidebar:
 
-    st.image(st.image("images/logo.png", width=70)
+    st.image(st.image("images/logo.png", width=70))
 
     st.title("EcoCycle AI")
 
