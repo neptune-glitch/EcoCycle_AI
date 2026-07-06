@@ -116,9 +116,9 @@ if user_note:
 
     check = security_check(user_note)
 
-    if check == "BLOCKED":
+    if check.startswith("BLOCKED"):
 
-        st.error("🚫 Unsafe content detected.")
+        st.error(f"🚫 Unsafe content detected ({check}).")
 
         st.stop()
 
