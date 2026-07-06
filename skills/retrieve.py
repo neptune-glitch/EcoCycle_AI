@@ -2,6 +2,7 @@ import os
 import chromadb
 from dotenv import load_dotenv
 from google import genai
+import chromadb
 
 load_dotenv()
 
