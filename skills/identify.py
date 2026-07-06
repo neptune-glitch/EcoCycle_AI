@@ -5,16 +5,10 @@ from PIL import Image
 
 load_dotenv()
 
-print("API Key:", os.getenv("GEMINI_API_KEY"))
-
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 def identify(image_path: str) -> str:
-    print("Opening image:", image_path)
-
     image = Image.open(image_path)
-
-    print("Sending request to Gemini...")
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
@@ -30,7 +24,5 @@ def identify(image_path: str) -> str:
             """
         ]
     )
-
-    print("Gemini Response:", response.text)
 
     return response.text.strip()
