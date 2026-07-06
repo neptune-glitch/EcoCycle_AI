@@ -16,128 +16,227 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
+# CUSTOM CSS
+# ---------------------------------------------------
+st.markdown("""
+<style>
+
+.main {
+    padding-top:1rem;
+}
+
+div[data-testid="stMetric"]{
+    background-color:#f8f9fa;
+    border-radius:12px;
+    padding:15px;
+    border:1px solid #e6e6e6;
+}
+
+div.stButton>button{
+    border-radius:10px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------------------------------------------
 # SIDEBAR
 # ---------------------------------------------------
 with st.sidebar:
-    st.title("♻️ EcoCycle AI")
+
+    st.image("https://img.icons8.com/color/96/recycle.png", width=70)
+
+    st.title("EcoCycle AI")
+
+    st.markdown("### 🌍 About")
+
     st.write(
         """
-        This AI agent can:
-
-        ✅ Identify waste from a photo\n
-        ✅ Search a recycling knowledge base (RAG)\n
-        ✅ Generate AI-written reuse & upcycling ideas\n
-        ✅ Filter unsafe/malicious input before it reaches the agent\n
-        """
+EcoCycle AI uses **Gemini Vision + ChromaDB RAG**
+to identify waste and provide sustainable recycling
+recommendations.
+"""
     )
+
     st.markdown("---")
-    st.caption("Built for Earth 🌍 · Gemini 2.5 Flash · ChromaDB · ADK")
+
+    st.markdown("### ✅ Supported Waste")
+
+    st.markdown("""
+- Plastic Bottle
+- Glass Bottle
+- Plastic Bag
+- Tin Can
+- Aluminum Can
+- Newspaper
+- Cardboard
+- Banana Peel
+- Coffee Grounds
+- Egg Shell
+""")
+
+    st.markdown("---")
+
+    st.success("🌱 Every recycled item makes a difference!")
 
 # ---------------------------------------------------
-# HEADER
+# HERO
 # ---------------------------------------------------
-st.markdown(
-    """
-    # ♻️ EcoCycle AI
-    ### Smart Waste Identification & AI Reuse-Hack Generator
 
-    Upload any waste image and get an AI-generated recycling &
-    reuse plan — not just a lookup.
-    """
+st.title("♻️ EcoCycle AI")
+
+st.subheader("Smart Waste Identification & Recycling Assistant")
+
+st.write(
+"""
+Upload a waste image and EcoCycle AI will:
+
+✅ Identify the waste item
+
+♻️ Search an AI-powered recycling knowledge base
+
+🌱 Generate reuse ideas
+
+💚 Give eco-friendly recycling advice
+"""
 )
 
-st.markdown("---")
+st.divider()
 
 # ---------------------------------------------------
-# OPTIONAL: user note / context (also demonstrates the security agent tool)
+# USER NOTE
 # ---------------------------------------------------
+
 user_note = st.text_input(
-    "Optional: add a note about this item (e.g. 'it's a bit dirty')",
-    ""
+    "💬 Optional Note",
+    placeholder="Example: The bottle still has some liquid inside."
 )
 
 if user_note:
+
     check = security_check(user_note)
+
     if check == "BLOCKED":
-        st.error("🔒 That note was blocked by the security filter for containing unsafe content.")
+
+        st.error("🚫 Unsafe content detected.")
+
         st.stop()
-    else:
-        st.caption("🔒 Security check passed — note will be used as extra context.")
+
+    st.success("🔒 Security check passed.")
 
 # ---------------------------------------------------
-# UPLOAD SECTION
+# FILE UPLOAD
 # ---------------------------------------------------
+
 uploaded_file = st.file_uploader(
-    "📤 Upload a waste image",
-    type=["jpg", "jpeg", "png"]
+    "📷 Upload Waste Image",
+    type=["jpg","jpeg","png"]
 )
+
+# ---------------------------------------------------
+# MAIN
+# ---------------------------------------------------
 
 if uploaded_file:
 
+    st.divider()
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:
+
         tmp.write(uploaded_file.read())
+
         image_path = tmp.name
 
+    progress = st.progress(0)
+
     try:
-        with st.spinner("🔍 AI is identifying your item..."):
+
+        progress.progress(20)
+
+        with st.spinner("🧠 Identifying waste..."):
             item = identify(image_path)
 
-        with st.spinner("♻️ Searching recycling knowledge base..."):
+        progress.progress(45)
+
+        with st.spinner("♻️ Searching knowledge base..."):
             knowledge = retrieve(item)
 
-        with st.spinner("🤖 AI is generating your reuse plan..."):
+        progress.progress(75)
+
+        with st.spinner("🤖 Generating recycling advice..."):
             answer = advise(item, knowledge)
 
+        progress.progress(100)
+
     except Exception as e:
-        error_text = str(e).lower()
 
-        if any(keyword in error_text for keyword in
-               ["quota", "rate limit", "429", "resourceexhausted", "resource_exhausted"]):
-            st.error("🚦 We've hit the AI usage limit for now.")
-            st.warning(
-                "The Gemini API free-tier quota has been reached. "
-                "This usually resets after a short while. Please try again shortly 🙏"
-            )
+        txt = str(e).lower()
+
+        if any(x in txt for x in ["429","quota","resource_exhausted"]):
+
+            st.error("🚦 Gemini API quota exceeded.")
+
+            st.info("Please wait a while and try again.")
+
         else:
-            st.error("⚠️ Something went wrong while processing your image.")
-            st.warning("Please try again, or upload a different image.")
 
-        with st.expander("🔧 Technical details (for developers)"):
-            st.code(str(e))
+            st.error("⚠️ Something went wrong.")
+
+            with st.expander("Technical Details"):
+                st.code(str(e))
 
         st.stop()
 
-    st.markdown("## 🔎 Results")
+    # --------------------------------------------
 
-    col1, col2 = st.columns([1, 1])
+    col1,col2 = st.columns([1,1])
 
     with col1:
-        st.image(uploaded_file, caption="Uploaded Image", use_container_width=True)
+
+        st.image(
+            uploaded_file,
+            caption="Uploaded Image",
+            use_container_width=True
+        )
 
     with col2:
-        st.metric(label="🧠 Detected Waste", value=item)
-        st.success("✅ AI reuse plan generated below")
 
-    st.markdown("---")
-    st.markdown("## ♻️ AI-Generated Recycling & Reuse Plan")
-    st.markdown(answer)
+        st.metric("🧠 Detected Waste", item)
 
-    with st.expander("📖 View Raw Knowledge Base Match (RAG source)"):
-        st.write(knowledge)
+        st.success("AI analysis completed successfully.")
 
-    st.markdown("---")
-    st.markdown(
-        """
-        ### 🌱 Every small action counts
-        Recycling this item helps reduce landfill waste and supports a cleaner planet.
-        """
+        st.info("The recycling information below comes from the AI knowledge base.")
+
+    st.divider()
+
+    st.subheader("♻️ Recycling Recommendation")
+
+    with st.container(border=True):
+
+        st.markdown(answer)
+
+    st.divider()
+
+    with st.expander("📖 View Knowledge Base Match"):
+
+        st.code(knowledge)
+
+    st.divider()
+
+    st.success(
+        "🌍 Great job! Recycling this item helps reduce landfill waste and protects the environment."
     )
 
 else:
-    st.info("👆 Upload a waste image above to get started.")
+
+    st.info("👆 Upload a waste image to begin.")
 
 # ---------------------------------------------------
 # FOOTER
 # ---------------------------------------------------
-st.markdown("---")
-st.caption("Made with ❤️ using Gemini API • ChromaDB • Google ADK • Streamlit")
+
+st.divider()
+
+st.caption(
+    "Made with ❤️ using Gemini 2.5 Flash • ChromaDB • Streamlit • Google ADK"
+)
