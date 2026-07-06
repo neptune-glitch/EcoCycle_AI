@@ -8,7 +8,11 @@ load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 chroma_client = chromadb.PersistentClient(path="chroma_db")
-collection = chroma_client.get_collection("waste_items")
+try:
+    collection = chroma_client.get_collection("waste_items")
+except:
+    import build_db
+    collection = chroma_client.get_collection("waste_items")
 
 
 def retrieve(item: str) -> str:
