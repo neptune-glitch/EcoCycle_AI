@@ -214,15 +214,10 @@ API keys are stored securely using a `.env` file and are excluded from version c
 
 ## 🌐 Live Demo
 
-> **Coming Soon** *(Add your Streamlit deployment URL after deployment.)*
-
+> **https://eccmsxsjdw8any4nekytyi.streamlit.app/** 
 ---
 
-## 🎥 Demo Video
 
-> **Coming Soon** *(Add your YouTube demo link if required.)*
-
----
 
 ## 👩‍💻 Author
 
