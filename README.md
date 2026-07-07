@@ -1,131 +1,43 @@
----
+# ♻️ EcoCycle AI
 
-## 🚀 Installation
-
-Clone the repository
-
-```bash
-git clone https://github.com/neptune-glitch/EcoCycle_AI.git
-cd EcoCycle_AI
-```
-
-Create a virtual environment
-
-```bash
-python -m venv venv
-```
-
-Activate it
-
-### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-### macOS / Linux
-
-```bash
-source venv/bin/activate
-```
-
-Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Create a `.env` file
-
-```env
-GEMINI_API_KEY=YOUR_GEMINI_API_KEY
-```
-
-Run the application
-
-```bash
-streamlit run streamlit_app.py
-```
+> An AI agent for waste identification and reuse-hack generation, built using **Google ADK**, **Gemini 2.5 Flash**, **ChromaDB (RAG)**, and **Streamlit**.
 
 ---
 
-## 📸 How It Works
+## 🌍 Overview
 
-1. User input (if any) is passed through the security agent.
-2. Upload an image of a waste item.
-3. Gemini Vision identifies the object.
-4. Gemini Embeddings convert the detected item into a vector.
-5. ChromaDB retrieves the most relevant recycling knowledge (RAG).
-6. Gemini generates the final AI-written reuse plan.
-7. EcoCycle AI displays: Material, Recycling status, Compostability, Reuse ideas, Eco-friendly guidance.
+EcoCycle AI helps users identify waste items from a photo and generates an AI-written recycling and reuse plan — material type, recyclability, compostability, and creative reuse ideas.
+
+Instead of a single model call, EcoCycle AI is built as an **agent pipeline**: an image-identification step, a **Retrieval-Augmented Generation (RAG)** step grounded in a ChromaDB knowledge base, a **security check** step, and a final generation step — orchestrated with **Google's Agent Development Kit (ADK)**.
 
 ---
 
-## 📚 Knowledge Base
+## ✨ Features
 
-Current supported items include:
-
-- Plastic Bottle
-- Glass Bottle
-- Plastic Bag
-- Banana Peel
-- Tin Can
-- Aluminum Can
-- Cardboard
-- Newspaper
-- Coffee Grounds
-- Egg Shell
-
-The knowledge base can easily be expanded by updating the CSV dataset.
+- 📷 Upload an image of a waste item
+- 🤖 AI-powered image identification using Gemini Vision
+- 📚 RAG-based recycling knowledge retrieval (grounded, not hallucinated)
+- 🔒 Security-agent input filtering (prompt injection / credential exfiltration defense, with tracing)
+- ♻️ Material identification
+- ✅ Recycling status
+- 🌱 Compostability information
+- 💡 AI-generated creative reuse ideas
+- 🎨 Modern Streamlit interface, deployed live
 
 ---
 
-## 🌱 Future Improvements
+## 🛠️ Tech Stack
 
-- Live camera detection
-- More waste categories
-- Nearby recycling center recommendations
-- Barcode scanning
-- Multi-language support
-- Carbon footprint estimation
-- MCP-based integration with external recycling-center APIs
-
----
-
-## 📸 Screenshots
-
-### Home Page
-
-> <img width="1920" height="1080" alt="Screenshot (87)" src="https://github.com/user-attachments/assets/8c96b4bf-2d1a-431e-abc2-e877d8bb4623" />
-
-### Detection Result
-
-> <img width="1920" height="1080" alt="Screenshot (88)" src="https://github.com/user-attachments/assets/33620ee9-0675-4015-90d0-ae49bc416834" />
-> <img width="1920" height="1080" alt="Screenshot (88)" src="https://github.com/user-attachments/assets/c3600551-13b7-453d-842b-adffe79c852f" />
-> <img width="1920" height="1080" alt="Screenshot (89)" src="https://github.com/user-attachments/assets/75821c5e-f75b-4f2b-98d7-2d05bf668a1e" />
+- Python
+- Streamlit
+- **Google ADK** (Agent Development Kit)
+- Google Gemini 2.5 Flash (vision + generation)
+- Gemini Embeddings
+- ChromaDB
+- Pandas
+- Pillow
+- python-dotenv
 
 ---
 
-## 🌐 Live Demo
-
-> **https://eccmsxsjdw8any4nekytyi.streamlit.app/**
-
----
-
-## 🎥 Demo Video
-
-> **https://youtu.be/GqJlkBbJzx8**
-
----
-
-## 👩‍💻 Author
-
-**Bharti Pathak**
-
-Built with ❤️ using Google ADK, Gemini, ChromaDB, and Streamlit.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
+## 🏗️ Architecture
