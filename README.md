@@ -214,7 +214,14 @@ API keys are stored securely using a `.env` file and are excluded from version c
 
 ## 🌐 Live Demo
 
-> **https://eccmsxsjdw8any4nekytyi.streamlit.app/** 
+> **https://eccmsxsjdw8any4nekytyi.streamlit.app/**
+---
+
+
+## 🎥 Demo Video
+
+> **https://youtu.be/GqJlkBbJzx8** 
+
 ---
 
 
